@@ -29,7 +29,7 @@ class UpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $updater = new Updater();
+        $updater = new Updater(null, false);
 
         if ($input->getOption('rollback')) {
             if (!$updater->rollback()) {
@@ -42,7 +42,7 @@ class UpdateCommand extends Command
         $updater->getStrategy()->setPharUrl(self::PHAR_FILE_URL);
         $updater->getStrategy()->setVersionUrl(self::PHAR_VERSION_URL);
         if (!$updater->update()) {
-            $output->writeln('No update needed');
+            $output->writeln('<info>No update needed</info>');
 
             return 0;
         }
