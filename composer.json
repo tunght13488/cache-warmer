@@ -1,0 +1,22 @@
+{
+    "name": "tunght13488/cache-warmer",
+    "version": "0.1",
+    "license": [
+        "WTFPL"
+    ],
+    "authors": [
+        {
+            "name": "Ha The Tung",
+            "email": "tunght13488@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^4.3",
+        "padraic/phar-updater": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TungHa\\CacheWarmer\\": "src"
+        }
+    }
+}

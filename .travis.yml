@@ -1,0 +1,35 @@
+sudo: false
+language: php
+cache:
+  directories:
+    - "$HOME/.composer/cache"
+    - vendor
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+    - php: 7.2
+      env:
+        - EXECUTE_DEPLOYMENT=true
+    - php: 7.3
+    - php: 7.4
+    - php: hhvm
+  allow_failures:
+    - php: 7.1
+    - php: 7.3
+    - php: 7.4
+    - php: hhvm
+before_install:
+  - openssl aes-256-cbc -K $encrypted_1544a7f811ac_key -iv $encrypted_1544a7f811ac_iv
+    -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+  - phpenv config-rm xdebug.ini
+  - composer self-update
+install:
+  - travis_retry composer install --no-interaction
+  - composer info -i
+script: skip
+after_success:
+  - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then composer install --no-dev ; fi
+  - if [[ $EXECUTE_DEPLOYMENT == 'true' && $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then ./bin/deploy.sh ; fi
+notifications:
+  email: true
